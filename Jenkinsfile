@@ -83,9 +83,9 @@ spec:
 
             steps {
                 sh """
-                sudo yum install amazon-ecr-credential-helper
                 ls ~/
                 ls ~/.docker
+                wget https://amazon-ecr-credential-helper-releases.s3.us-east-2.amazonaws.com/0.6.0/linux-amd64/docker-credential-ecr-login
                 chmod +x docker-credential-ecr-login
                 mkdir ~/bin
                 mv docker-credential-ecr-login ~/bin/docker-credential-ecr-login
