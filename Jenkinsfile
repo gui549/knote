@@ -23,7 +23,7 @@ spec:
     volumeMounts:
       - mountPath: /var/run/docker.sock
         name: docker-socket
-      - mountPath: /home/ec2-user/.docker
+      - mountPath: /root/.docker
         name: docker-config
   - name: java
     image: openjdk:17-alpine
@@ -77,13 +77,12 @@ spec:
         }
         stage('Push') {
             environment {
-                PATH = "/home/user/bin:$PATH"
+                PATH = "/root/bin:$PATH"
                 ECR_REPOSITORY = '567232876231.dkr.ecr.ap-northeast-3.amazonaws.com/knote:latest'
             }
 
             steps {
                 sh """
-                ls ~/
                 ls ~/.docker
                 wget https://amazon-ecr-credential-helper-releases.s3.us-east-2.amazonaws.com/0.6.0/linux-amd64/docker-credential-ecr-login
                 chmod +x docker-credential-ecr-login
