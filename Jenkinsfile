@@ -84,7 +84,7 @@ spec:
             steps {
                 withCredentials([aws(credentialsId: 'kong-jenkins-credentials',
                                     accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']) {
+                                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                     sh """
                     ls ~/.docker
                     wget https://amazon-ecr-credential-helper-releases.s3.us-east-2.amazonaws.com/0.6.0/linux-amd64/docker-credential-ecr-login
