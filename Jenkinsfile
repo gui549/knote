@@ -23,7 +23,7 @@ spec:
     volumeMounts:
       - mountPath: /var/run/docker.sock
         name: docker-socket
-      - mountPath: /home/user/.docker
+      - mountPath: /home/ec2-user/.docker
         name: docker-config
   - name: java
     image: openjdk:17-alpine
