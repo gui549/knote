@@ -82,22 +82,19 @@ spec:
             }
 
             steps {
-                sh """
-                ls ~/.docker
-                wget https://amazon-ecr-credential-helper-releases.s3.us-east-2.amazonaws.com/0.6.0/linux-amd64/docker-credential-ecr-login
-                chmod +x docker-credential-ecr-login
-                mkdir ~/bin
-                mv docker-credential-ecr-login ~/bin/docker-credential-ecr-login
-                docker tag \$PROJECT_NAME:latest $ECR_REPOSITORY
-                docker push $ECR_REPOSITORY
-                """
-//                 withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'account-ECR', usernameVariable: 'ECR_USER', passwordVariable: 'ECR_PASSWORD']]) {
-//                     sh """
-//                     docker login --username ${ECR_USER} --password ${ECR_PASSWORD} 567232876231.dkr.ecr.ap-northeast-3.amazonaws.com
-//                     docker tag \$PROJECT_NAME:latest $ECR_REPOSITORY
-//                     docker push $ECR_REPOSITORY
-//                     """
-//                 }
+                withCredentials([aws(credentialsId: 'kong-jenkins-credentials',
+                                    accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']) {
+                    sh """
+                    ls ~/.docker
+                    wget https://amazon-ecr-credential-helper-releases.s3.us-east-2.amazonaws.com/0.6.0/linux-amd64/docker-credential-ecr-login
+                    chmod +x docker-credential-ecr-login
+                    mkdir ~/bin
+                    mv docker-credential-ecr-login ~/bin/docker-credential-ecr-login
+                    docker tag \$PROJECT_NAME:latest $ECR_REPOSITORY
+                    docker push $ECR_REPOSITORY
+                    """
+                }
             }
         }
     }
