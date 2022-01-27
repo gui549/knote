@@ -13,7 +13,7 @@ public class SpringConfig {
 
     @Bean
     public KnoteProperties properties() {
-        System.out.println("knoteProperties bean is created.");
+        System.out.println("knoteProperties bean is created!");
         return new KnoteProperties();
     }
 
