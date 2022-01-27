@@ -19,7 +19,7 @@ public class SpringConfig {
 
     @Bean
     public NoteService noteService() {
-        System.out.println("noteRepository bean is created.");
+        System.out.println("noteRepository bean is created!");
         return new NoteService(noteRepository);
     }
 }
