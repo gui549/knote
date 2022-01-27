@@ -1,7 +1,7 @@
 pipeline {
     agent {
         kubernetes {
-            yaml '''
+            yaml """
 apiVersion: v1
 kind: Pod
 spec:
@@ -23,6 +23,8 @@ spec:
     volumeMounts:
       - mountPath: /var/run/docker.sock
         name: docker-socket
+      - mountPath: /home/user/.docker
+        name: docker-config
   - name: java
     image: openjdk:17-alpine
     tty: true
@@ -34,7 +36,10 @@ spec:
   - name: docker-socket
     hostPath:
       path: /var/run/docker.sock
-'''
+  - name: docker-config
+    configMap:
+      name: docker-config
+"""
             defaultContainer 'docker'
         }
     }
@@ -72,17 +77,28 @@ spec:
         }
         stage('Push') {
             environment {
+                PATH = "/home/user/bin:$PATH"
                 ECR_REPOSITORY = '567232876231.dkr.ecr.ap-northeast-3.amazonaws.com/knote:latest'
             }
 
             steps {
-                withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'account-ECR', usernameVariable: 'ECR_USER', passwordVariable: 'ECR_PASSWORD']]) {
-                    sh """
-                    docker login --username ${ECR_USER} --password ${ECR_PASSWORD} 567232876231.dkr.ecr.ap-northeast-3.amazonaws.com
-                    docker tag \$PROJECT_NAME:latest $ECR_REPOSITORY
-                    docker push $ECR_REPOSITORY
-                    """
-                }
+                sh """
+                sudo yum install amazon-ecr-credential-helper
+                ls ~/
+                ls ~/.docker
+                chmod +x docker-credential-ecr-login
+                mkdir ~/bin
+                mv docker-credential-ecr-login ~/bin/docker-credential-ecr-login
+                docker tag \$PROJECT_NAME:latest $ECR_REPOSITORY
+                docker push $ECR_REPOSITORY
+                """
+//                 withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'account-ECR', usernameVariable: 'ECR_USER', passwordVariable: 'ECR_PASSWORD']]) {
+//                     sh """
+//                     docker login --username ${ECR_USER} --password ${ECR_PASSWORD} 567232876231.dkr.ecr.ap-northeast-3.amazonaws.com
+//                     docker tag \$PROJECT_NAME:latest $ECR_REPOSITORY
+//                     docker push $ECR_REPOSITORY
+//                     """
+//                 }
             }
         }
     }
