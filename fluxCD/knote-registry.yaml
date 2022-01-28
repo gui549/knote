@@ -6,3 +6,5 @@ metadata:
 spec:
   image: 567232876231.dkr.ecr.ap-northeast-3.amazonaws.com/knote
   interval: 1m0s
+  secretRef:
+    name: docker-registry

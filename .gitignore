@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### K8s Secret ###
+fluxCD/aws-credentials.yaml
