@@ -1,3 +1,5 @@
+env.releaseTag = '0.0.1'
+
 pipeline {
     agent {
         kubernetes {
@@ -78,7 +80,7 @@ spec:
         stage('Push') {
             environment {
                 PATH = "/root/bin:$PATH"
-                ECR_REPOSITORY = '567232876231.dkr.ecr.ap-northeast-3.amazonaws.com/knote:latest'
+                ECR_REPOSITORY = '567232876231.dkr.ecr.ap-northeast-3.amazonaws.com/knote:${releaseTag}'
             }
 
             steps {
