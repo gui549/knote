@@ -8,4 +8,4 @@ spec:
     name: knote
   policy:
     semver:
-      range: *
+      range: '>=0.0.0'
