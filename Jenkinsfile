@@ -1,4 +1,4 @@
-releaseTag = '0.0.1'
+env.releaseTag = '0.0.1'
 
 pipeline {
     agent {
