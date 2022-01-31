@@ -21,6 +21,6 @@ spec:
     kind: GitRepository
     name: flux-system
   update:
-    path: .fluxCD
+    path: ./fluxCD
     strategy: Setters
 
