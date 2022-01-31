@@ -13,13 +13,13 @@ public class SpringConfig {
 
     @Bean
     public KnoteProperties properties() {
-        System.out.println("knoteProperties bean is created!!");
+        System.out.println("knoteProperties bean is created.");
         return new KnoteProperties();
     }
 
     @Bean
     public NoteService noteService() {
-        System.out.println("noteRepository bean is created!!");
+        System.out.println("noteRepository bean is created.");
         return new NoteService(noteRepository);
     }
 }
