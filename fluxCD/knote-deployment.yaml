@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: knote-container
-          image: 567232876231.dkr.ecr.ap-northeast-3.amazonaws.com/knote
+          image: 567232876231.dkr.ecr.ap-northeast-3.amazonaws.com/knote:0.0.1 # {"$imagepolicy": "flux-system:knote"}
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
