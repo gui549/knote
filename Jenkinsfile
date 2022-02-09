@@ -1,7 +1,5 @@
 env.releaseTag = '0.0.3'
 
-switch
-
 pipeline {
     agent {
         kubernetes {
