@@ -1,6 +1,7 @@
 env.releaseTag = '0.0.3'
 env.branchName = ''
 env.repositoryName= ''
+env.needPrintEnv = True
 
 switch (env.GIT_BRANCH) {
     case "origin/main":
@@ -12,7 +13,7 @@ switch (env.GIT_BRANCH) {
         env.repositoryName = 'dev'
         break
     default:
-        sh "printenv"
+        env.needPrintEnv = True
         break
 }
 
@@ -65,6 +66,9 @@ spec:
         stage('Checkout') {
             steps {
                 container('git') {
+                    if (env.needPrintEnv) {
+                        sh "printenv"
+                    }
                     sh "git clone --single-branch --branch ${branchName} \$PROJECT_URL"
                 }
             }
