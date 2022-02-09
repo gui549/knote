@@ -78,18 +78,19 @@ spec:
         stage('Checkout') {
             steps {
                 script {
-                    if (env.GIT_BRANCH == 'origin/v0.0.3') {
-                        env.branchName = "v0.0.3"
-                    } else if (env.GIT_BRANCH == 'v0.0.3'){
-                        env.branchName = "dev"
+                    if (env.GIT_BRANCH == 'origin/main') {
+                        env.branchName = 'main'
+                        env.repositoryName = 'ops'
+                    } else if (env.GIT_BRANCH == 'origin/dev'){
+                        env.branchName = 'dev'
+                        env.repositoryName = 'dev'
                     } else {
-                        echo
-                        env.branchName = env.GIT_BRANCH
+                        env.branchName = 'dev'
+                        env.repositoryName = 'dev'
                     }
                 }
 
                 container('git') {
-                    sh "printenv"
                     sh "git clone --single-branch --branch ${branchName} \$PROJECT_URL"
                 }
             }
