@@ -78,12 +78,13 @@ spec:
         stage('Checkout') {
             steps {
                 script {
-                    if (env.BRANCH_NAME == 'origin/v0.0.3') {
+                    if (env.GIT_BRANCH == 'origin/v0.0.3') {
                         env.branchName = "v0.0.3"
-                    } else if (env.BRANCH_NAME == 'v0.0.3'){
+                    } else if (env.GIT_BRANCH == 'v0.0.3'){
                         env.branchName = "dev"
                     } else {
-                        env.branchName = env.BRANCH_NAME
+                        echo
+                        env.branchName = env.GIT_BRANCH
                     }
                 }
 
