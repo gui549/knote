@@ -1,5 +1,7 @@
 env.releaseTag = '0.0.3'
 
+switch
+
 pipeline {
     agent {
         kubernetes {
@@ -49,7 +51,7 @@ spec:
         stage('Checkout') {
             steps {
                 container('git') {
-                    switch(GIT_BRANCH) {
+                    switch(env.GIT_BRANCH) {
                         case "origin/main":
                             sh "git clone --single-branch --branch main \$PROJECT_URL"
                             break
@@ -87,7 +89,7 @@ spec:
         stage('Push') {
             environment {
                 PATH = "/root/bin:$PATH"
-                switch(GIT_BRANCH) {
+                switch(env.GIT_BRANCH) {
                     case "origin/main":
                         ECR_REPOSITORY = '567232876231.dkr.ecr.ap-northeast-3.amazonaws.com/knote-ops:${releaseTag}'
                         break
