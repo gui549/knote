@@ -1,12 +1,14 @@
 package learnk8s.io.knotejava;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
+@Component
+@ConfigurationProperties(prefix = "knote")
 public class KnoteProperties {
-
-    private String uploadDir = "/opt/uploads/";
-
+    @Value("${uploadDir:/opt/uploads/}")
+    private String uploadDir;
     public String getUploadDir() {
         return uploadDir;
     }
