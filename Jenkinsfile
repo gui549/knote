@@ -49,9 +49,9 @@ spec:
         stage('Checkout') {
             steps {
                 container('git') {
-                    sh "printenv"
+                    sh 'printenv'
                     sh """
-                    git clone --single-branch --branch env.GIT_BRANCH \$PROJECT_URL
+                    git clone --single-branch --branch v0.0.3 \$PROJECT_URL
                     """
                 }
             }
@@ -59,7 +59,6 @@ spec:
         stage('Build') {
             steps {
                 container('java') {
-                    throw new Exception("Test")
                     sh """
                     cd \$PROJECT_NAME
                     chmod +x gradlew
