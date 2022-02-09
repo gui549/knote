@@ -11,8 +11,21 @@ switch (env.GIT_BRANCH) {
         env.branchName = 'dev'
         env.repositoryName = 'dev'
         break
+    case "origin/v0.0.3":
+        env.branchName = 'v0.0.3'
+        env.repositoryName = 'dev'
+        break
+    case "main":
+        env.branchName = 'mai1111n'
+        break
+    case "dev":
+        env.branchName = 'mdevn'
+        break
+    case "v0.0.3":
+        env.branchName = 'mdea123132123123vn'
+        break
     default:
-        throw new Exception("Invalid Branch")
+        echo env.GIT_BRANCH
         break
 }
 
@@ -64,6 +77,19 @@ spec:
     stages {
         stage('Checkout') {
             steps {
+                script {
+                    if (env.GIT_BRANCH == 'origin/main') {
+                        env.branchName = 'main'
+                        env.repositoryName = 'knote-ops'
+                    } else if (env.GIT_BRANCH == 'origin/dev'){
+                        env.branchName = 'dev'
+                        env.repositoryName = 'knote-dev'
+                    } else {
+                        env.branchName = 'dev'
+                        env.repositoryName = 'knote-dev'
+                    }
+                }
+
                 container('git') {
                     sh "git clone --single-branch --branch ${branchName} \$PROJECT_URL"
                 }
