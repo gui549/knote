@@ -25,6 +25,8 @@ switch (env.GIT_BRANCH) {
         env.branchName = 'mdea123132123123vn'
         break
     default:
+        echo env.GIT_BRANCH
+        echo GIT_BRANCH
         break
 }
 
