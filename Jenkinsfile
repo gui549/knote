@@ -12,7 +12,7 @@ switch (env.GIT_BRANCH) {
         env.repositoryName = 'dev'
         break
     default:
-        sh "echo ${GIT_BRANCH}"
+        sh "printenv"
         break
 }
 
