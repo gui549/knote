@@ -1,4 +1,4 @@
-env.releaseTag = '0.0.2'
+env.releaseTag = '0.0.3'
 
 pipeline {
     agent {
@@ -49,8 +49,10 @@ spec:
         stage('Checkout') {
             steps {
                 container('git') {
+                    sh "printenv"
+                    throw new Exception("Test")
                     sh """
-                    git clone \$PROJECT_URL
+                    git clone --single-branch --branch env.GIT_BRANCH \$PROJECT_URL
                     """
                 }
             }
