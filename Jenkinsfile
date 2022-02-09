@@ -1,4 +1,19 @@
 env.releaseTag = '0.0.3'
+env.branchName = ''
+env.repositoryName= ''
+
+switch (env.GIT_BRANCH) {
+    case "origin/main":
+        env.branchName = 'main'
+        env.repositoryName = 'ops'
+        break
+    case "origin/dev":
+        env.branchName = 'dev'
+        env.repositoryName = 'dev'
+        break
+    default:
+        throw new Exception("Invalid Branch")
+}
 
 pipeline {
     agent {
@@ -49,15 +64,7 @@ spec:
         stage('Checkout') {
             steps {
                 container('git') {
-                    switch(env.GIT_BRANCH) {
-                        case "origin/main":
-                            sh "git clone --single-branch --branch main \$PROJECT_URL"
-                            break
-                        case "origin/main":
-                            sh "git clone --single-branch --branch dev \$PROJECT_URL"
-                            break
-                        default:
-                            throw new Exception("Invalid Branch")
+                    sh "git clone --single-branch --branch ${branchName} \$PROJECT_URL"
                     }
                 }
             }
@@ -87,14 +94,7 @@ spec:
         stage('Push') {
             environment {
                 PATH = "/root/bin:$PATH"
-                switch(env.GIT_BRANCH) {
-                    case "origin/main":
-                        ECR_REPOSITORY = '567232876231.dkr.ecr.ap-northeast-3.amazonaws.com/knote-ops:${releaseTag}'
-                        break
-                    case "origin/main":
-                        ECR_REPOSITORY = '567232876231.dkr.ecr.ap-northeast-3.amazonaws.com/knote-dev:${releaseTag}'
-                        break
-                }
+                ECR_REPOSITORY = '567232876231.dkr.ecr.ap-northeast-3.amazonaws.com/${repositoryName}:${releaseTag}'
             }
             steps {
                 withCredentials([aws(credentialsId: 'kong-jenkins-credentials',
