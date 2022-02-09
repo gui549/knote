@@ -26,7 +26,6 @@ switch (env.GIT_BRANCH) {
         break
     default:
         echo env.GIT_BRANCH
-        echo GIT_BRANCH
         break
 }
 
@@ -77,6 +76,7 @@ spec:
     }
     stages {
         stage('Checkout') {
+            echo env.GIT_BRANCH
             steps {
                 container('git') {
                     sh "printenv"
