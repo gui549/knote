@@ -83,7 +83,7 @@ spec:
                     } else if (env.BRANCH_NAME == 'v0.0.3'){
                         env.branchName = "dev"
                     } else {
-                        env.branchName = "ops"
+                        env.branchName = env.BRANCH_NAME
                     }
                 }
 
