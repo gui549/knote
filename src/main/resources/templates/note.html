@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>kNote</title>
+    <link rel="stylesheet" href="note.css">
+</head>
+<body>
+    <div class="header">
+        <h1><a href="http://k8s-default-knoteing-1cb04b8081-192338647.ap-northeast-3.elb.amazonaws.com">kNote</a></h1>
+        <a class="post-btn btn" id="new-btn" href="http://k8s-default-knoteing-1cb04b8081-192338647.ap-northeast-3.elb.amazonaws.com/post/new">New Note</a>
+    </div>
+
+    <div class="note-container" id="note-container">
+        <div class="note">
+            <div class="note-header">
+                <div class="note-header-left">
+                    <p class="note-title" th:text="${note.title}">hello</p>
+                    <p class="note-author" th:text="${note.author}">Kong</p>
+                </div>
+                <div class="note-timestamp">
+                    <p class="note-timestamp-date" th:text="${note.createdDate}">22-02-03</p>
+                    <p class="note-timestamp-time" th:text="${note.createdTime}">22:09</p>
+                </div>
+            </div>
+            <p class="note-description">HiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiIt's a test description. It's a test description.It's a test description.It's a test description.It's a test description.It's a test description.It's a test description.It's a test description.It's a test description.It's a test description.</p>
+
+            <div class="comment-container">
+                <p class="comment-count" th:text="${note.comments.length} + ' Comments'">2 Comments</p>
+                <div class="comment-list">
+                    <div class="comment" th:each="comment : ${note.comments}">
+                        <p class="comment-author" th:text="${comment.author}">Yoaaaaaaaaon</p>
+                        <p class="comment-description" th:text="${comment.description}">HiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHi</p>
+                        <div class="comment-timestamp">
+                            <p class="comment-timestamp-date" th:text="${comment.createdDate}">21-02-21</p>
+                            <p class="comment-timestamp-time" th:text="${comment.createdTime}">12:03</p>
+                        </div>
+                    </div>
+                </div>
+
+                <form class="comment-form" action="/note/comment" method="post">
+                    <input class="comment-input-author" placeholder="Name" name="author">
+                    <span class="comment-input-description" role="textbox" contenteditable="true" name="description"></span>
+                    <input class="comment-btn btn" type="submit" value="Submit">
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
