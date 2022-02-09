@@ -1,4 +1,33 @@
 env.releaseTag = '0.0.3'
+env.branchName = ''
+env.repositoryName= ''
+
+switch (env.GIT_BRANCH) {
+    case "origin/main":
+        env.branchName = 'main'
+        env.repositoryName = 'ops'
+        break
+    case "origin/dev":
+        env.branchName = 'dev'
+        env.repositoryName = 'dev'
+        break
+    case "origin/v0.0.3":
+        env.branchName = 'v0.0.3'
+        env.repositoryName = 'dev'
+        break
+    case "main":
+        env.branchName = 'mai1111n'
+        break
+    case "dev":
+        env.branchName = 'mdevn'
+        break
+    case "v0.0.3":
+        env.branchName = 'mdea123132123123vn'
+        break
+    default:
+        echo env.GIT_BRANCH
+        break
+}
 
 pipeline {
     agent {
@@ -48,22 +77,31 @@ spec:
     stages {
         stage('Checkout') {
             steps {
+                script {
+                    if (env.GIT_BRANCH == 'origin/main') {
+                        env.branchName = 'main'
+                        env.repositoryName = 'knote-ops'
+                    } else if (env.GIT_BRANCH == 'origin/dev'){
+                        env.branchName = 'dev'
+                        env.repositoryName = 'knote-dev'
+                    } else {
+                        env.branchName = 'dev'
+                        env.repositoryName = 'knote-dev'
+                    }
+                }
+
                 container('git') {
-                    sh "printenv"
-                    sh """
-                    git clone --single-branch --branch env.GIT_BRANCH \$PROJECT_URL
-                    """
+                    sh "git clone --single-branch --branch ${branchName} \$PROJECT_URL"
                 }
             }
         }
         stage('Build') {
             steps {
                 container('java') {
-                    throw new Exception("Test")
                     sh """
                     cd \$PROJECT_NAME
                     chmod +x gradlew
-                    ./gradlew build
+                    ./gradlew build -x test
                     """
                 }
                 container('docker') {
@@ -82,9 +120,8 @@ spec:
         stage('Push') {
             environment {
                 PATH = "/root/bin:$PATH"
-                ECR_REPOSITORY = '567232876231.dkr.ecr.ap-northeast-3.amazonaws.com/knote:${releaseTag}'
+                ECR_REPOSITORY = '567232876231.dkr.ecr.ap-northeast-3.amazonaws.com/${repositoryName}:${releaseTag}'
             }
-
             steps {
                 withCredentials([aws(credentialsId: 'kong-jenkins-credentials',
                                     accessKeyVariable: 'AWS_ACCESS_KEY_ID',
