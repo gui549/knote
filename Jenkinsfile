@@ -80,13 +80,13 @@ spec:
                 script {
                     if (env.GIT_BRANCH == 'origin/main') {
                         env.branchName = 'main'
-                        env.repositoryName = 'ops'
+                        env.repositoryName = 'knote-ops'
                     } else if (env.GIT_BRANCH == 'origin/dev'){
                         env.branchName = 'dev'
-                        env.repositoryName = 'dev'
+                        env.repositoryName = 'knote-dev'
                     } else {
                         env.branchName = 'dev'
-                        env.repositoryName = 'dev'
+                        env.repositoryName = 'knote-dev'
                     }
                 }
 
