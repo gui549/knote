@@ -76,10 +76,12 @@ spec:
     }
     stages {
         stage('Checkout') {
-            if (env.BRANCH_NAME == 'origin/v0.0.3') {
-                env.branchName = "v0.0.3"
-            }
             steps {
+                script {
+                    if (env.BRANCH_NAME == 'origin/v0.0.3') {
+                        env.branchName = "v0.0.3"
+                    }
+                }
 
                 container('git') {
                     sh "printenv"
