@@ -80,8 +80,10 @@ spec:
                 script {
                     if (env.BRANCH_NAME == 'origin/v0.0.3') {
                         env.branchName = "v0.0.3"
-                    } else {
+                    } else if (env.BRANCH_NAME == 'v0.0.3'){
                         env.branchName = "dev"
+                    } else {
+                        env.branchName = "ops"
                     }
                 }
 
