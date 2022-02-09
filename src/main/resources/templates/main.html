@@ -9,8 +9,8 @@
 </head>
 <body>
     <div class="header">
-        <h1><a href="http://k8s-default-knoteing-1cb04b8081-192338647.ap-northeast-3.elb.amazonaws.com">kNote</a></h1>
-        <a class="post-btn btn" id="new-btn" href="http://k8s-default-knoteing-1cb04b8081-192338647.ap-northeast-3.elb.amazonaws.com/post/new">New Note</a>
+        <h1><a href="/">kNote</a></h1>
+        <a class="post-btn btn" id="new-btn" href="/post/new">New Note</a>
     </div>
     <div class="note-container" id="note-container">
         <div class="note" th:each="note : ${notes}">
@@ -32,19 +32,19 @@
     </div>
 
     <div class="pagination">
-        <a href="#" class="btn">&#8249;&#8249;</a>
+        <a href="/?page=${pagination.prevStartPage}" class="btn" th:if="${pagination.showFirstPage}">&#8249;&#8249;</a>
         <span>
-            <a href="#" class="btn" th:if="${pagination.showFirstPage}">1</a>
+            <a href="/" class="btn" th:if="${pagination.showFirstPage}">1</a>
             <a th:if="${pagination.showFirstPage}">..</a>
 
             <a href="#" class="btn active" th:each="pageIndex: ${pagination.pageIndices}"
-                th:href="" th:class="'btn' + ( ${pageIndex} == ${currentPage} ? ' active' : '' )"
+                th:href="@{/?page=${pageIndex}}" th:class="'btn' + ( ${pageIndex} == ${pagination.currentPage} ? ' active' : '' )"
                 th:text="${pageIndex}">11</a>
 
             <a th:if="${pagination.showLastPage}">..</a>
-            <a href="#" class="btn" th:if="${pagination.showLastPage}">101</a>
+            <a th:href="@{/?page=${pagination.totalPages}}" class="btn" th:if="${pagination.showLastPage}">101</a>
         </span>
-        <a href="#" class="btn">&#8250;&#8250;</a>
+        <a href="/?page=${pagination.nextStartPage}" class="btn" th:if="${pagination.showLastPage}">&#8250;&#8250;</a>
     </div>
 </body>
 </html>
