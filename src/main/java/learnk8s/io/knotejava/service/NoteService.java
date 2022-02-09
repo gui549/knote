@@ -35,6 +35,8 @@ public class NoteService {
         int currentPage = notePages.getNumber();
         int totalPages = notePages.getTotalPages();
         int startPage = ((currentPage - 1) / 10) * 10 + 1; // 1 ~ 10 => 1, 11 ~ 20 => 11, 21 ~ 30 => 21, ...
+        int prevStartPage = startPage - 10; // if this value is minus, user can't see the button for previous start page
+        int nextStartPage = startPage + 10; // similar to above
 
         Boolean showFirstPage = false;
         boolean showLastPage = false;
@@ -50,12 +52,15 @@ public class NoteService {
 
         if (startPage <= totalPages) {
             showLastPage = true;
+
         }
 
         Map<String, Object> pagination = new HashMap<>();
         pagination.put("currentPage", Integer.valueOf(currentPage));
         pagination.put("totalPages", Integer.valueOf(totalPages));
         pagination.put("startPage", Integer.valueOf(startPage));
+        pagination.put("prevStartPage", Integer.valueOf(prevStartPage));
+        pagination.put("nextStartPage", Integer.valueOf(nextStartPage));
         pagination.put("showFirstPage", Boolean.valueOf(showFirstPage));
         pagination.put("showLastPage", Boolean.valueOf(showLastPage));
         pagination.put("pageIndices", pageIndices);
