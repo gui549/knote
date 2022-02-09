@@ -16,11 +16,14 @@ switch (env.GIT_BRANCH) {
         env.repositoryName = 'dev'
         break
     case "main":
-         env.branchName = 'mai1111n'
-         break
+        env.branchName = 'mai1111n'
+        break
     case "dev":
         env.branchName = 'mdevn'
-         break
+        break
+    case "v0.0.3":
+        env.branchName = 'mdea123132123123vn'
+        break
     default:
         break
 }
