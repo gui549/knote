@@ -50,6 +50,7 @@ spec:
             steps {
                 container('git') {
                     sh 'printenv'
+
                     sh """
                     git clone --single-branch --branch v0.0.3 \$PROJECT_URL
                     """
