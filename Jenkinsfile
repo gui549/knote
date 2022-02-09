@@ -76,8 +76,8 @@ spec:
     }
     stages {
         stage('Checkout') {
-            echo env.GIT_BRANCH
             steps {
+                echo env.GIT_BRANCH
                 container('git') {
                     sh "printenv"
                     sh "git clone --single-branch --branch ${branchName} \$PROJECT_URL"
