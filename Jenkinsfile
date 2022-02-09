@@ -64,11 +64,11 @@ spec:
     }
     stages {
         stage('Checkout') {
+            if (env.needPrintEnv) {
+                sh "printenv"
+            }
             steps {
                 container('git') {
-                    if (env.needPrintEnv) {
-                        sh "printenv"
-                    }
                     sh "git clone --single-branch --branch ${branchName} \$PROJECT_URL"
                 }
             }
