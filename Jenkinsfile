@@ -49,11 +49,16 @@ spec:
         stage('Checkout') {
             steps {
                 container('git') {
-                    sh 'printenv'
-
-                    sh """
-                    git clone --single-branch --branch v0.0.3 \$PROJECT_URL
-                    """
+                    switch(GIT_BRANCH) {
+                        case "origin/main":
+                            sh "git clone --single-branch --branch main \$PROJECT_URL"
+                            break
+                        case "origin/main":
+                            sh "git clone --single-branch --branch dev \$PROJECT_URL"
+                            break
+                        default:
+                            throw new Exception("Invalid Branch")
+                    }
                 }
             }
         }
@@ -63,7 +68,7 @@ spec:
                     sh """
                     cd \$PROJECT_NAME
                     chmod +x gradlew
-                    ./gradlew build
+                    ./gradlew build -x test
                     """
                 }
                 container('docker') {
@@ -82,9 +87,15 @@ spec:
         stage('Push') {
             environment {
                 PATH = "/root/bin:$PATH"
-                ECR_REPOSITORY = '567232876231.dkr.ecr.ap-northeast-3.amazonaws.com/knote:${releaseTag}'
+                switch(GIT_BRANCH) {
+                    case "origin/main":
+                        ECR_REPOSITORY = '567232876231.dkr.ecr.ap-northeast-3.amazonaws.com/knote-ops:${releaseTag}'
+                        break
+                    case "origin/main":
+                        ECR_REPOSITORY = '567232876231.dkr.ecr.ap-northeast-3.amazonaws.com/knote-dev:${releaseTag}'
+                        break
+                }
             }
-
             steps {
                 withCredentials([aws(credentialsId: 'kong-jenkins-credentials',
                                     accessKeyVariable: 'AWS_ACCESS_KEY_ID',
