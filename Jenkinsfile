@@ -13,6 +13,7 @@ switch (env.GIT_BRANCH) {
         break
     default:
         throw new Exception("Invalid Branch")
+        break
 }
 
 pipeline {
@@ -65,7 +66,6 @@ spec:
             steps {
                 container('git') {
                     sh "git clone --single-branch --branch ${branchName} \$PROJECT_URL"
-                    }
                 }
             }
         }
