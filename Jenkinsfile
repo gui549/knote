@@ -12,7 +12,7 @@ switch (env.GIT_BRANCH) {
         env.repositoryName = 'dev'
         break
     default:
-        throw new Exception("Invalid Branch")
+        sh "echo ${GIT_GIT_BRANCH}"
         break
 }
 
