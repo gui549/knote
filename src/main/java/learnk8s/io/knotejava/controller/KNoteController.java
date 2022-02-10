@@ -42,12 +42,6 @@ public class KNoteController {
         return "main";
     }
 
-    @GetMapping("/note/new")
-    public String test(Model model) {
-        return "write-test";
-    }
-
-
     @GetMapping("/note")
     public String getEntireNote(@RequestParam String id, Model model) {
         Optional<Note> note = noteService.getEntireNote(id);
