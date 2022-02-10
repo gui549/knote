@@ -26,7 +26,7 @@
             </div>
             <p class="note-description" th:text="${note.description}">HiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiIt's a test description. It's a test description.It's a test description.It's a test description.It's a test description.It's a test description.It's a test description.It's a test description.It's a test description.It's a test description.</p>
             <div class="comment-container">
-                <a href="#" th:href="@{/note(noteId=${note.id})}" class="comment-count" th:text="${numOfComments} + ' Comments'">2 Comments</a>
+                <a href="#" th:href="@{/note(noteId=${note.id})}" class="comment-count" th:text="${#lists.size(note.comments)} + ' Comments'">2 Comments</a>
             </div>
         </div>
     </div>
