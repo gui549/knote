@@ -19,7 +19,7 @@ import java.util.Optional;
 
 @Controller
 public class KNoteController {
-    private NoteService noteService;
+    private final NoteService noteService;
     final static int size = 10;
 
     @Autowired
