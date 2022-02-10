@@ -1,33 +1,6 @@
-env.releaseTag = '0.0.4'
+env.releaseTag = '0.0.5'
 env.branchName = ''
 env.repositoryName= ''
-
-switch (env.GIT_BRANCH) {
-    case "origin/main":
-        env.branchName = 'main'
-        env.repositoryName = 'ops'
-        break
-    case "origin/dev":
-        env.branchName = 'dev'
-        env.repositoryName = 'dev'
-        break
-    case "origin/v0.0.3":
-        env.branchName = 'v0.0.3'
-        env.repositoryName = 'dev'
-        break
-    case "main":
-        env.branchName = 'mai1111n'
-        break
-    case "dev":
-        env.branchName = 'mdevn'
-        break
-    case "v0.0.3":
-        env.branchName = 'mdea123132123123vn'
-        break
-    default:
-        echo env.GIT_BRANCH
-        break
-}
 
 pipeline {
     agent {
