@@ -32,7 +32,7 @@
     </div>
 
     <div class="pagination">
-        <a href="@{/(page=${pagination.prevStartPage})}" class="btn" th:if="${pagination.showFirstPage}">&#8249;&#8249;</a>
+        <a th:href="@{/(page=${pagination.prevStartPage})}" class="btn" th:if="${pagination.showFirstPage}">&#8249;&#8249;</a>
         <span>
             <a href="/" class="btn" th:if="${pagination.showFirstPage}">1</a>
             <a th:if="${pagination.showFirstPage}">..</a>
@@ -42,7 +42,7 @@
                 th:text="${pageIndex}">11</a>
 
             <a th:if="${pagination.showLastPage}">..</a>
-            <a th:href="@{/(page=${pagination.totalPages})}" class="btn" th:if="${pagination.showLastPage}">101</a>
+            <a th:href="@{/(page=${pagination.totalPages})}" class="btn" th:if="${pagination.showLastPage}" th:text="${pagination.totalPages}">101</a>
         </span>
         <a th:href="@{/(page=${pagination.nextStartPage})}" class="btn" th:if="${pagination.showLastPage}">&#8250;&#8250;</a>
     </div>
