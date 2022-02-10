@@ -1,4 +1,4 @@
-env.releaseTag = '0.0.7'
+env.releaseTag = '0.0.8'
 env.branchName = ''
 env.repositoryName= ''
 
