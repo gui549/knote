@@ -28,18 +28,24 @@ public class KNoteController {
     }
 
     @GetMapping("/")
-    public String getNotePages(@RequestParam(defaultValue = "0") int page, Model model) {
-        Pageable paging = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "_id"));
+    public String getNotePages(@RequestParam(defaultValue = "1") int page, Model model) {
+        Pageable paging = PageRequest.of(page - 1, size, Sort.by(Sort.Direction.DESC, "_id"));
         Page<Note> notePages = noteService.getNotePages(paging);
 
-        List<Note> note = noteService.getNoteInPage(notePages);
+        List<Note> notes = noteService.getNoteInPage(notePages);
         Map<String, Object> pagination = noteService.getPagination(notePages);
 
-        model.addAttribute("note", note);
+        model.addAttribute("notes", notes);
         model.addAttribute("pagination", pagination);
 
         return "main";
     }
+
+    @GetMapping("/note/new")
+    public String test(Model model) {
+        return "write-test";
+    }
+
 
     @GetMapping("/note")
     public String getEntireNote(@RequestParam String id, Model model) {

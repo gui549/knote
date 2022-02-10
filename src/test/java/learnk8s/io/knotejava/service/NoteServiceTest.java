@@ -4,6 +4,7 @@ import learnk8s.io.knotejava.domain.Comment;
 import learnk8s.io.knotejava.domain.Note;
 import learnk8s.io.knotejava.repository.NoteRepository;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,6 +24,7 @@ class NoteServiceTest {
     @Autowired NoteService noteService;
     @Autowired NoteRepository noteRepository;
 
+    @BeforeEach
     @AfterEach
     public void afterEach() {
         noteRepository.deleteAll();
@@ -34,7 +36,7 @@ class NoteServiceTest {
 
         Note[] savedNotes = new Note[TOTAL_NOTES];
         for (int i = 0; i < TOTAL_NOTES; i++) {
-            savedNotes[i] = noteService.saveNote("testTitle", "testAuthor", "testDescription");
+            savedNotes[i] = noteService.saveNote("testTitle" + i, "testAuthor" + i, "testDescription" + i);
         }
 
         Pageable paging = PageRequest.of(PAGE, SIZE, Sort.by(Sort.Direction.DESC, "_id"));

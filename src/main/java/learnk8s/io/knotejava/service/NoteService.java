@@ -32,7 +32,7 @@ public class NoteService {
     }
 
     public Map<String, Object> getPagination(Page notePages) {
-        int currentPage = notePages.getNumber();
+        int currentPage = notePages.getNumber() + 1; // plus 1 because pageable start page 0
         int totalPages = notePages.getTotalPages();
         int startPage = ((currentPage - 1) / 10) * 10 + 1; // 1 ~ 10 => 1, 11 ~ 20 => 11, 21 ~ 30 => 21, ...
         int prevStartPage = startPage - 10; // if this value is minus, user can't see the button for previous start page
