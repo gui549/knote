@@ -90,8 +90,13 @@ public class NoteService {
         }
 
         Date currentTime = new Date();
-        String createdDate = new SimpleDateFormat("yyyy-MM-dd").format(currentTime);
-        String createdTime = new SimpleDateFormat("HH:mm").format(currentTime);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("GTM+9"));
+        timeFormat.setTimeZone(TimeZone.getTimeZone("GTM+9"));
+
+        String createdDate = dateFormat.format(currentTime);
+        String createdTime = timeFormat.format(currentTime);
 
         Note savedNote = noteRepository.save(new Note(null, title, author, createdDate, createdTime, description, new ArrayList<Comment>()));
 
