@@ -50,7 +50,7 @@ public class KNoteController {
     @GetMapping("/note")
     public String getEntireNote(@RequestParam String id, Model model) {
         Optional<Note> note = noteService.getEntireNote(id);
-        model.addAttribute("note", note);
+        model.addAttribute("note", note.get());
         return "note";
     }
 
@@ -61,7 +61,7 @@ public class KNoteController {
                            Model model) {
 
         try {
-            Note savedNoteId = noteService.saveNote(title, author, description);
+            Note savedNote = noteService.saveNote(title, author, description);
         }
         catch (IllegalArgumentException exception) {
             return "redirect:/note/new";
@@ -76,7 +76,7 @@ public class KNoteController {
                               Model model) {
 
         try {
-            Boolean isSaved = noteService.saveComment(id, author, description);
+            noteService.saveComment(id, author, description);
         }
         catch (IllegalArgumentException exception) {
             return "redirect:/note";
