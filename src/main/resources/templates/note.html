@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>kNote</title>
-    <link rel="stylesheet" href="/static/note.css">
+    <link rel="stylesheet" href="note.css">
 </head>
 <body>
     <div class="header">
@@ -34,15 +34,18 @@
                         <p class="comment-author" th:text="${comment.author}">Yoaaaaaaaaon</p>
                         <p class="comment-description" th:text="${comment.description}">HiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHi</p>
                         <div class="comment-timestamp">
-                            <p class="comment-timestamp-date" th:text="${comment.createdDate}">21-02-21</p>
+                            <p class="comment-timestamp-date" th:text="${comment.createdDate}">21.02.21</p>
                             <p class="comment-timestamp-time" th:text="${comment.createdTime}">12:03</p>
                         </div>
                     </div>
                 </div>
 
-                <form class="comment-form" action="/note/comment" method="post">
-                    <input class="comment-input-author" placeholder="Name" name="author">
-                    <span class="comment-input-description" role="textbox" contenteditable="true" name="description"></span>
+                <form class="comment-form" action="/note" method="post">
+                    <input name="id" th:value="${note.id}" hidden>
+                    <div class="comment-input-container">
+                        <input class="comment-input-author" placeholder="Name" name="author">
+                        <textarea class="comment-input-description" name="description"></textarea>
+                    </div>
                     <input class="comment-btn btn" type="submit" value="Submit">
                 </form>
             </div>
