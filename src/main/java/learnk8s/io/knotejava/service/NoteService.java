@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -72,49 +74,43 @@ public class NoteService {
     public Note saveNote(String title, String author, String description) throws IllegalArgumentException {
         // Invalid Title
         if (isInvalid(title)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Invalid Title.");
         }
 
         // Invalid Author
         else if (isInvalid(author)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Invalid Author.");
         }
 
         // Invalid description
         else if (isInvalid(description)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Invalid Description.");
         }
 
-        Date currentTime = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd");
-        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-        dateFormat.setTimeZone(TimeZone.getTimeZone("GTM+9"));
-        timeFormat.setTimeZone(TimeZone.getTimeZone("GTM+9"));
+        ZoneId zone = ZoneId.of("Asia/Seoul");
+        String createdDate = DateTimeFormatter.ofPattern("yy.MM.dd").format(LocalDate.now(zone));
+        String createdTime = DateTimeFormatter.ofPattern("HH:mm").format(LocalTime.now(zone));
 
-        String createdDate = dateFormat.format(currentTime);
-        String createdTime = timeFormat.format(currentTime);
-
-        return noteRepository.save(new Note(null, title, author, createdDate, createdTime, description, new ArrayList<Comment>()));
+        return noteRepository.save(new Note(null, title, author, createdDate, createdTime, description, new ArrayList<>()));
     }
 
-    public Boolean saveComment(String id, String author, String description) {
+    public void saveComment(String id, String author, String description) {
         // Invalid Author
         if (isInvalid(author)) {
-            return false;
+            throw new IllegalArgumentException("Invalid Author.");
         }
 
         // Invalid description
         else if (isInvalid(description)) {
-            return false;
+            throw new IllegalArgumentException("Invalid Description.");
         }
 
-        Date currentTime = new Date();
-        String createdDate = new SimpleDateFormat("yyyy-MM-dd").format(currentTime);
-        String createdTime = new SimpleDateFormat("HH:mm").format(currentTime);
+        ZoneId zone = ZoneId.of("Asia/Seoul");
+        String createdDate = DateTimeFormatter.ofPattern("yy.MM.dd").format(LocalDate.now(zone));
+        String createdTime = DateTimeFormatter.ofPattern("HH:mm").format(LocalTime.now(zone));
 
-//      TODO: PUSH A NEW COMMENT
-//        Note savedComment = noteRepository
-        return true;
+        Comment comment = new Comment(author, createdDate, createdTime, description);
+        noteRepository.pushCommentById(id, comment);
     }
 
     private Boolean isInvalid(String testString) {

@@ -98,10 +98,17 @@ class NoteServiceTest {
 
     @Test
     void saveComment() {
-        Comment comment1 = new Comment("Kong", "21-01-21", "21:09", "Hello");
-        Comment comment2 = new Comment("Han", "21-01-21", "23:12", "Hi");
-        List<Comment> comments = new ArrayList<Comment>();
-        comments.add(comment1);
-        comments.add(comment2);
+        Note savedNote = noteService.saveNote("noteTitle", "noteAuthor", "noteDescription");
+
+        noteService.saveComment(savedNote.getId(), "author0", "description0");
+        noteService.saveComment(savedNote.getId(), "author1", "description1");
+
+        Note retrievedNote = noteService.getEntireNote(savedNote.getId()).get();
+        List<Comment> savedComments = retrievedNote.getComments();
+
+        for (int i = 0; i < savedComments.size(); i++) {
+            assertThat(savedComments.get(i).getAuthor()).isEqualTo("author" + i);
+            assertThat(savedComments.get(i).getDescription()).isEqualTo("description" + i);
+        }
     }
 }

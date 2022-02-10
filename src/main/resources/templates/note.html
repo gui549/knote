@@ -28,7 +28,7 @@
             <p class="note-description">HiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiIt's a test description. It's a test description.It's a test description.It's a test description.It's a test description.It's a test description.It's a test description.It's a test description.It's a test description.It's a test description.</p>
 
             <div class="comment-container">
-                <p class="comment-count" th:text="${note.comments.length} + ' Comments'">2 Comments</p>
+                <p class="comment-count" th:text="${#lists.size(note.comments)} + ' Comments'">2 Comments</p>
                 <div class="comment-list">
                     <div class="comment" th:each="comment : ${note.comments}">
                         <p class="comment-author" th:text="${comment.author}">Yoaaaaaaaaon</p>
