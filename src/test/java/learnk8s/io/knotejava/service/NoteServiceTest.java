@@ -4,6 +4,7 @@ import learnk8s.io.knotejava.domain.Comment;
 import learnk8s.io.knotejava.domain.Note;
 import learnk8s.io.knotejava.repository.NoteRepository;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,6 +24,7 @@ class NoteServiceTest {
     @Autowired NoteService noteService;
     @Autowired NoteRepository noteRepository;
 
+    @BeforeEach
     @AfterEach
     public void afterEach() {
         noteRepository.deleteAll();
@@ -34,7 +36,7 @@ class NoteServiceTest {
 
         Note[] savedNotes = new Note[TOTAL_NOTES];
         for (int i = 0; i < TOTAL_NOTES; i++) {
-            savedNotes[i] = noteService.saveNote("testTitle", "testAuthor", "testDescription");
+            savedNotes[i] = noteService.saveNote("testTitle" + i, "testAuthor" + i, "testDescription" + i);
         }
 
         Pageable paging = PageRequest.of(PAGE, SIZE, Sort.by(Sort.Direction.DESC, "_id"));
@@ -96,10 +98,17 @@ class NoteServiceTest {
 
     @Test
     void saveComment() {
-        Comment comment1 = new Comment("Kong", "21-01-21", "21:09", "Hello");
-        Comment comment2 = new Comment("Han", "21-01-21", "23:12", "Hi");
-        List<Comment> comments = new ArrayList<Comment>();
-        comments.add(comment1);
-        comments.add(comment2);
+        Note savedNote = noteService.saveNote("noteTitle", "noteAuthor", "noteDescription");
+
+        noteService.saveComment(savedNote.getId(), "author0", "description0");
+        noteService.saveComment(savedNote.getId(), "author1", "description1");
+
+        Note retrievedNote = noteService.getEntireNote(savedNote.getId()).get();
+        List<Comment> savedComments = retrievedNote.getComments();
+
+        for (int i = 0; i < savedComments.size(); i++) {
+            assertThat(savedComments.get(i).getAuthor()).isEqualTo("author" + i);
+            assertThat(savedComments.get(i).getDescription()).isEqualTo("description" + i);
+        }
     }
 }

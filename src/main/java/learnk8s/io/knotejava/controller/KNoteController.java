@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,7 @@ import java.util.Optional;
 
 @Controller
 public class KNoteController {
-    private NoteService noteService;
+    private final NoteService noteService;
     final static int size = 10;
 
     @Autowired
@@ -28,14 +29,14 @@ public class KNoteController {
     }
 
     @GetMapping("/")
-    public String getNotePages(@RequestParam(defaultValue = "0") int page, Model model) {
-        Pageable paging = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "_id"));
+    public String getNotePages(@RequestParam(defaultValue = "1") int page, Model model) {
+        Pageable paging = PageRequest.of(page - 1, size, Sort.by(Sort.Direction.DESC, "_id"));
         Page<Note> notePages = noteService.getNotePages(paging);
 
-        List<Note> note = noteService.getNoteInPage(notePages);
+        List<Note> notes = noteService.getNoteInPage(notePages);
         Map<String, Object> pagination = noteService.getPagination(notePages);
 
-        model.addAttribute("note", note);
+        model.addAttribute("notes", notes);
         model.addAttribute("pagination", pagination);
 
         return "main";
@@ -44,7 +45,7 @@ public class KNoteController {
     @GetMapping("/note")
     public String getEntireNote(@RequestParam String id, Model model) {
         Optional<Note> note = noteService.getEntireNote(id);
-        model.addAttribute("note", note);
+        model.addAttribute("note", note.get());
         return "note";
     }
 
@@ -55,7 +56,7 @@ public class KNoteController {
                            Model model) {
 
         try {
-            Note savedNoteId = noteService.saveNote(title, author, description);
+            Note savedNote = noteService.saveNote(title, author, description);
         }
         catch (IllegalArgumentException exception) {
             return "redirect:/note/new";
@@ -70,12 +71,12 @@ public class KNoteController {
                               Model model) {
 
         try {
-            Boolean isSaved = noteService.saveComment(id, author, description);
+            noteService.saveComment(id, author, description);
         }
         catch (IllegalArgumentException exception) {
-            return "redirect:/note";
+            return "redirect:/note?id=" + id;
         }
 
-        return "redirect:/note";
+        return "redirect:/note?id=" + id;
     }
 }

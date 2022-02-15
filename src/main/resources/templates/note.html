@@ -9,8 +9,8 @@
 </head>
 <body>
     <div class="header">
-        <h1><a href="http://k8s-default-knoteing-1cb04b8081-192338647.ap-northeast-3.elb.amazonaws.com">kNote</a></h1>
-        <a class="post-btn btn" id="new-btn" href="http://k8s-default-knoteing-1cb04b8081-192338647.ap-northeast-3.elb.amazonaws.com/post/new">New Note</a>
+        <h1><a href="/">kNote</a></h1>
+        <a class="post-btn btn" id="new-btn" href="/note/new">New Note</a>
     </div>
 
     <div class="note-container" id="note-container">
@@ -25,24 +25,27 @@
                     <p class="note-timestamp-time" th:text="${note.createdTime}">22:09</p>
                 </div>
             </div>
-            <p class="note-description">HiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiIt's a test description. It's a test description.It's a test description.It's a test description.It's a test description.It's a test description.It's a test description.It's a test description.It's a test description.It's a test description.</p>
+            <p class="note-description" th:text="${note.description}">HiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiIt's a test description. It's a test description.It's a test description.It's a test description.It's a test description.It's a test description.It's a test description.It's a test description.It's a test description.It's a test description.</p>
 
             <div class="comment-container">
-                <p class="comment-count" th:text="${note.comments.length} + ' Comments'">2 Comments</p>
+                <p class="comment-count" th:text="${#lists.size(note.comments)} + ' Comments'">2 Comments</p>
                 <div class="comment-list">
                     <div class="comment" th:each="comment : ${note.comments}">
                         <p class="comment-author" th:text="${comment.author}">Yoaaaaaaaaon</p>
                         <p class="comment-description" th:text="${comment.description}">HiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHi</p>
                         <div class="comment-timestamp">
-                            <p class="comment-timestamp-date" th:text="${comment.createdDate}">21-02-21</p>
+                            <p class="comment-timestamp-date" th:text="${comment.createdDate}">21.02.21</p>
                             <p class="comment-timestamp-time" th:text="${comment.createdTime}">12:03</p>
                         </div>
                     </div>
                 </div>
 
-                <form class="comment-form" action="/note/comment" method="post">
-                    <input class="comment-input-author" placeholder="Name" name="author">
-                    <span class="comment-input-description" role="textbox" contenteditable="true" name="description"></span>
+                <form class="comment-form" action="/note" method="post">
+                    <input name="id" th:value="${note.id}" hidden>
+                    <div class="comment-input-container">
+                        <input class="comment-input-author" placeholder="Name" name="author">
+                        <textarea class="comment-input-description" name="description"></textarea>
+                    </div>
                     <input class="comment-btn btn" type="submit" value="Submit">
                 </form>
             </div>

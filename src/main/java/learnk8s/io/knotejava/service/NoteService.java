@@ -8,13 +8,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
 public class NoteService {
-    private NoteRepository noteRepository;
+    private final NoteRepository noteRepository;
 
     @Autowired
     public NoteService(NoteRepository noteRepository) {
@@ -22,29 +23,27 @@ public class NoteService {
     }
 
     public Page<Note> getNotePages(Pageable pageable) {
-        Page<Note> notePages = noteRepository.findAll(pageable);
-        return notePages;
+        return noteRepository.findAll(pageable);
     }
 
-    public List<Note> getNoteInPage(Page notePages) {
-        List<Note> notes = notePages.getContent();
-        return notes;
+    public List<Note> getNoteInPage(Page<Note> notePages) {
+        return notePages.getContent();
     }
 
-    public Map<String, Object> getPagination(Page notePages) {
-        int currentPage = notePages.getNumber();
+    public Map<String, Object> getPagination(Page<Note> notePages) {
+        int currentPage = notePages.getNumber() + 1; // plus 1 because pageable start page 0
         int totalPages = notePages.getTotalPages();
         int startPage = ((currentPage - 1) / 10) * 10 + 1; // 1 ~ 10 => 1, 11 ~ 20 => 11, 21 ~ 30 => 21, ...
         int prevStartPage = startPage - 10; // if this value is minus, user can't see the button for previous start page
         int nextStartPage = startPage + 10; // similar to above
 
-        Boolean showFirstPage = false;
+        boolean showFirstPage = false;
         boolean showLastPage = false;
         if (startPage > 10) {
             showFirstPage = true;
         }
 
-        List<Integer> pageIndices = new ArrayList<Integer>();
+        List<Integer> pageIndices = new ArrayList<>();
         while (startPage <= totalPages && pageIndices.size() < 10) {
             pageIndices.add(startPage);
             startPage++;
@@ -56,66 +55,62 @@ public class NoteService {
         }
 
         Map<String, Object> pagination = new HashMap<>();
-        pagination.put("currentPage", Integer.valueOf(currentPage));
-        pagination.put("totalPages", Integer.valueOf(totalPages));
-        pagination.put("startPage", Integer.valueOf(startPage));
-        pagination.put("prevStartPage", Integer.valueOf(prevStartPage));
-        pagination.put("nextStartPage", Integer.valueOf(nextStartPage));
-        pagination.put("showFirstPage", Boolean.valueOf(showFirstPage));
-        pagination.put("showLastPage", Boolean.valueOf(showLastPage));
+        pagination.put("currentPage", currentPage);
+        pagination.put("totalPages", totalPages);
+        pagination.put("startPage", startPage);
+        pagination.put("prevStartPage", prevStartPage);
+        pagination.put("nextStartPage", nextStartPage);
+        pagination.put("showFirstPage", showFirstPage);
+        pagination.put("showLastPage", showLastPage);
         pagination.put("pageIndices", pageIndices);
 
         return pagination;
     }
 
     public Optional<Note> getEntireNote(String id) {
-        Optional<Note> note = noteRepository.findById(id);
-        return note;
+        return noteRepository.findById(id);
     }
 
     public Note saveNote(String title, String author, String description) throws IllegalArgumentException {
         // Invalid Title
         if (isInvalid(title)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Invalid Title.");
         }
 
         // Invalid Author
         else if (isInvalid(author)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Invalid Author.");
         }
 
         // Invalid description
         else if (isInvalid(description)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Invalid Description.");
         }
 
-        Date currentTime = new Date();
-        String createdDate = new SimpleDateFormat("yyyy-MM-dd").format(currentTime);
-        String createdTime = new SimpleDateFormat("HH:mm").format(currentTime);
+        ZoneId zone = ZoneId.of("Asia/Seoul");
+        String createdDate = DateTimeFormatter.ofPattern("yy.MM.dd").format(LocalDate.now(zone));
+        String createdTime = DateTimeFormatter.ofPattern("HH:mm").format(LocalTime.now(zone));
 
-        Note savedNote = noteRepository.save(new Note(null, title, author, createdDate, createdTime, description, new ArrayList<Comment>()));
-
-        return savedNote;
+        return noteRepository.save(new Note(null, title, author, createdDate, createdTime, description, new ArrayList<>()));
     }
 
-    public Boolean saveComment(String id, String author, String description) {
+    public void saveComment(String id, String author, String description) {
         // Invalid Author
         if (isInvalid(author)) {
-            return false;
+            throw new IllegalArgumentException("Invalid Author.");
         }
 
         // Invalid description
         else if (isInvalid(description)) {
-            return false;
+            throw new IllegalArgumentException("Invalid Description.");
         }
 
-        Date currentTime = new Date();
-        String createdDate = new SimpleDateFormat("yyyy-MM-dd").format(currentTime);
-        String createdTime = new SimpleDateFormat("HH:mm").format(currentTime);
+        ZoneId zone = ZoneId.of("Asia/Seoul");
+        String createdDate = DateTimeFormatter.ofPattern("yy.MM.dd").format(LocalDate.now(zone));
+        String createdTime = DateTimeFormatter.ofPattern("HH:mm").format(LocalTime.now(zone));
 
-//      TODO: PUSH A NEW COMMENT
-//        Note savedComment = noteRepository
-        return true;
+        Comment comment = new Comment(author, createdDate, createdTime, description);
+        noteRepository.pushCommentById(id, comment);
     }
 
     private Boolean isInvalid(String testString) {

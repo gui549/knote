@@ -10,7 +10,7 @@
 <body>
     <div class="header">
         <h1><a href="/">kNote</a></h1>
-        <a class="post-btn btn" id="new-btn" href="/post/new">New Note</a>
+        <a class="post-btn btn" id="new-btn" href="/note/new">New Note</a>
     </div>
     <div class="note-container" id="note-container">
         <div class="note" th:each="note : ${notes}">
@@ -24,27 +24,27 @@
                     <p class="note-timestamp-time" th:text="${note.createdTime}">22:09</p>
                 </div>
             </div>
-            <p class="note-description" th:text="${note.description}">HiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiIt's a test description. It's a test description.It's a test description.It's a test description.It's a test description.It's a test description.It's a test description.It's a test description.It's a test description.It's a test description.</p>
+            <p readonly class="note-description" th:text="${note.description}">HiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiHiIt's a test description. It's a test description.It's a test description.It's a test description.It's a test description.It's a test description.It's a test description.It's a test description.It's a test description.It's a test description.</p>
             <div class="comment-container">
-                <a href="#" th:href="@{/${note(noteId=${note.id})}}" class="comment-count" th:text="${numOfComments} + ' Comments'">2 Comments</a>
+                <a href="#" th:href="@{/note(id=${note.id})}" class="comment-count" th:text="${#lists.size(note.comments)} + ' Comments'">2 Comments</a>
             </div>
         </div>
     </div>
 
     <div class="pagination">
-        <a href="/?page=${pagination.prevStartPage}" class="btn" th:if="${pagination.showFirstPage}">&#8249;&#8249;</a>
+        <a th:href="@{/(page=${pagination.prevStartPage})}" class="btn" th:if="${pagination.showFirstPage}">&#8249;&#8249;</a>
         <span>
             <a href="/" class="btn" th:if="${pagination.showFirstPage}">1</a>
             <a th:if="${pagination.showFirstPage}">..</a>
 
             <a href="#" class="btn active" th:each="pageIndex: ${pagination.pageIndices}"
-                th:href="@{/?page=${pageIndex}}" th:class="'btn' + ( ${pageIndex} == ${pagination.currentPage} ? ' active' : '' )"
+                th:href="@{/?(page=${pageIndex})}" th:class="'btn' + ( ${pageIndex} == ${pagination.currentPage} ? ' active' : '' )"
                 th:text="${pageIndex}">11</a>
 
             <a th:if="${pagination.showLastPage}">..</a>
-            <a th:href="@{/?page=${pagination.totalPages}}" class="btn" th:if="${pagination.showLastPage}">101</a>
+            <a th:href="@{/(page=${pagination.totalPages})}" class="btn" th:if="${pagination.showLastPage}" th:text="${pagination.totalPages}">101</a>
         </span>
-        <a href="/?page=${pagination.nextStartPage}" class="btn" th:if="${pagination.showLastPage}">&#8250;&#8250;</a>
+        <a th:href="@{/(page=${pagination.nextStartPage})}" class="btn" th:if="${pagination.showLastPage}">&#8250;&#8250;</a>
     </div>
 </body>
 </html>
