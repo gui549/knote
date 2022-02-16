@@ -30,11 +30,11 @@ public class KNoteController {
 
     @GetMapping("/")
     public String getNotePages(@RequestParam(defaultValue = "1") int page, Model model) {
-//        Pageable paging = PageRequest.of(page - 1, size, Sort.by(Sort.Direction.DESC, "_id"));
-//        Page<Note> notePages = noteService.getNotePages(paging);
+        Pageable paging = PageRequest.of(page - 1, size, Sort.by(Sort.Direction.DESC, "_id"));
+        Page<Note> notePages = noteService.getNotePages(paging);
 
-        List<Note> notes = noteService.getNoteInPage((page - 1) * size, size);
-        Map<String, Object> pagination = noteService.getPagination(page - 1, size);
+        List<Note> notes = noteService.getNoteInPage(notePages);
+        Map<String, Object> pagination = noteService.getPagination(notePages);
 
         model.addAttribute("notes", notes);
         model.addAttribute("pagination", pagination);

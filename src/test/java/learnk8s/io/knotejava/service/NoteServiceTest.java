@@ -30,42 +30,42 @@ class NoteServiceTest {
         noteRepository.deleteAll();
     }
 
-//    @Test
-//    void getNotePages(){
-//        final int PAGE = 1, SIZE = 3, TOTAL_NOTES = 5;
-//
-//        Note[] savedNotes = new Note[TOTAL_NOTES];
-//        for (int i = 0; i < TOTAL_NOTES; i++) {
-//            savedNotes[i] = noteService.saveNote("testTitle" + i, "testAuthor" + i, "testDescription" + i);
-//        }
-//
-//        Pageable paging = PageRequest.of(PAGE, SIZE, Sort.by(Sort.Direction.DESC, "_id"));
-//        Page<Note> notePages = noteService.getNotePages(paging);
-//
-//        System.out.println("notePages.getNumber() = " + notePages.getNumber());
-//        System.out.println("notePages.getContent() = " + notePages.getContent());
-//        System.out.println("notePages.getTotalPages() = " + notePages.getTotalPages());
-//    }
+    @Test
+    void getNotePages(){
+        final int PAGE = 1, SIZE = 3, TOTAL_NOTES = 5;
 
-//    @Test
-//    void getNoteInPage() {
-//        final int PAGE = 3, SIZE = 3, TOTAL_NOTES = 10;
-//        final int TOTAL_PAGES = (int) Math.ceil((double) TOTAL_NOTES / SIZE);
-//
-//        Note[] savedNotes = new Note[TOTAL_NOTES];
-//        for (int i = 0; i < TOTAL_NOTES; i++) {
-//            savedNotes[i] = noteService.saveNote("testTitle", "testAuthor", "testDescription");
-//        }
-//
-//        Pageable paging = PageRequest.of(PAGE, SIZE, Sort.by(Sort.Direction.DESC, "_id"));
-//        Page<Note> notePages = noteService.getNotePages(paging);
-//        List<Note> notes = noteService.getNoteInPage(notePages);
-//
-//        assertThat(notePages.getTotalPages()).isEqualTo(TOTAL_PAGES);
-//        for (int i = 0; i < notes.size(); i++) {
-//            assertThat(notes.get(i).getId()).isEqualTo(savedNotes[TOTAL_NOTES - (SIZE * PAGE) - i - 1].getId());
-//        }
-//    }
+        Note[] savedNotes = new Note[TOTAL_NOTES];
+        for (int i = 0; i < TOTAL_NOTES; i++) {
+            savedNotes[i] = noteService.saveNote("testTitle" + i, "testAuthor" + i, "testDescription" + i);
+        }
+
+        Pageable paging = PageRequest.of(PAGE, SIZE, Sort.by(Sort.Direction.DESC, "_id"));
+        Page<Note> notePages = noteService.getNotePages(paging);
+
+        System.out.println("notePages.getNumber() = " + notePages.getNumber());
+        System.out.println("notePages.getContent() = " + notePages.getContent());
+        System.out.println("notePages.getTotalPages() = " + notePages.getTotalPages());
+    }
+
+    @Test
+    void getNoteInPage() {
+        final int PAGE = 3, SIZE = 3, TOTAL_NOTES = 10;
+        final int TOTAL_PAGES = (int) Math.ceil((double) TOTAL_NOTES / SIZE);
+
+        Note[] savedNotes = new Note[TOTAL_NOTES];
+        for (int i = 0; i < TOTAL_NOTES; i++) {
+            savedNotes[i] = noteService.saveNote("testTitle", "testAuthor", "testDescription");
+        }
+
+        Pageable paging = PageRequest.of(PAGE, SIZE, Sort.by(Sort.Direction.DESC, "_id"));
+        Page<Note> notePages = noteService.getNotePages(paging);
+        List<Note> notes = noteService.getNoteInPage(notePages);
+
+        assertThat(notePages.getTotalPages()).isEqualTo(TOTAL_PAGES);
+        for (int i = 0; i < notes.size(); i++) {
+            assertThat(notes.get(i).getId()).isEqualTo(savedNotes[TOTAL_NOTES - (SIZE * PAGE) - i - 1].getId());
+        }
+    }
 
     @Test
     void getPagination() {
