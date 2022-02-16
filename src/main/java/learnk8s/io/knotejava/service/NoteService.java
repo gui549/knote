@@ -22,17 +22,18 @@ public class NoteService {
         this.noteRepository = noteRepository;
     }
 
-    public Page<Note> getNotePages(Pageable pageable) {
-        return noteRepository.findAll(pageable);
+//    public Page<Note> getNotePages(Pageable pageable) {
+//        return noteRepository.findAll(pageable);
+//    }
+
+    public List<Note> getNoteInPage(int offset, int size) {
+        return noteRepository.findPageWithSkip(offset, size);
     }
 
-    public List<Note> getNoteInPage(Page<Note> notePages) {
-        return notePages.getContent();
-    }
+    public Map<String, Object> getPagination(int page, int size) {
 
-    public Map<String, Object> getPagination(Page<Note> notePages) {
-        int currentPage = notePages.getNumber() + 1; // plus 1 because pageable start page 0
-        int totalPages = notePages.getTotalPages();
+        int currentPage = page + 1; // plus 1 because pageable start page 0
+        long totalPages = (long) Math.ceil((double) noteRepository.count() / size);
         int startPage = ((currentPage - 1) / 10) * 10 + 1; // 1 ~ 10 => 1, 11 ~ 20 => 11, 21 ~ 30 => 21, ...
         int prevStartPage = startPage - 10; // if this value is minus, user can't see the button for previous start page
         int nextStartPage = startPage + 10; // similar to above
