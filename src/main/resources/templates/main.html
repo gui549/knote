@@ -38,7 +38,7 @@
             <a th:if="${pagination.showFirstPage}">..</a>
 
             <a href="#" class="btn active" th:each="pageIndex: ${pagination.pageIndices}"
-                th:href="@{/?(page=${pageIndex})}" th:class="'btn' + ( ${pageIndex} == ${pagination.currentPage} ? ' active' : '' )"
+                th:href="@{/(page=${pageIndex})}" th:class="'btn' + ( ${pageIndex} == ${pagination.currentPage} ? ' active' : '' )"
                 th:text="${pageIndex}">11</a>
 
             <a th:if="${pagination.showLastPage}">..</a>
